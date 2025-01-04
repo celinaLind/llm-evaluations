@@ -1,7 +1,7 @@
 ﻿# eVallMe
 
 ## Steps
-- [x] Planning Phase (flowchart, database breakdown, frontend design, etc)
+- [x] Planning Phase (flowchart, database breakdown, frontend design, etc) ~ 1.5 hours
 - [ ] Create Base Application - in progress
 - [ ] Frontend
 - [ ] Backend
