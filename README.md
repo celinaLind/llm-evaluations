@@ -1,8 +1,8 @@
 ﻿# eVallMe
 
 ## Steps
-- [ ] Planning Phase (flowchart, database breakdown, frontend design, etc) - in progress
-- [ ] Create Base Application
+- [x] Planning Phase (flowchart, database breakdown, frontend design, etc)
+- [ ] Create Base Application - in progress
 - [ ] Frontend
 - [ ] Backend
 
