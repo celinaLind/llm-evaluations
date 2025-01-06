@@ -3,11 +3,11 @@ import { Experiment } from "./experiment";
 import { Prompt } from "./prompt";
 
 const testcases = [
-  new TestCase({ id: 1 }),
-  new TestCase({ id: 2 }),
-  new TestCase({ id: 3 }),
-  new TestCase({ id: 4 }),
-  new TestCase({ id: 5 }),
+  new TestCase({ testName: "Test 1" }),
+  new TestCase({ testName: "Test 2" }),
+  new TestCase({ testName: "Test 3" }),
+  new TestCase({ testName: "Test 4" }),
+  new TestCase({ testName: "Test 5" }),
 ];
 
 const experiments = [
