@@ -1,30 +1,12 @@
 "use client";
 
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
-  VisibilityState,
-} from "@tanstack/react-table";
-import { TestCase } from "@/lib/utils/test-case";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { ChevronDown, MoreHorizontal } from "lucide-react";
-import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -35,78 +17,20 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { testcases } from "@/lib/utils/constants";
-
-const data = testcases;
-
-export const columns: ColumnDef<TestCase>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomeRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all Test Cases"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select Test Case"
-      />
-    ),
-    enableSorting: true,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "testName",
-    enableColumnFilter: true,
-    header: "Test Name",
-    cell: ({ row }) => <div>{row.getValue("testName")}</div>,
-  },
-  {
-    accessorKey: "input",
-    header: "Input",
-  },
-  {
-    accessorKey: "expectedOutput",
-    header: "Expected Output",
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      // FUTURE: Instead of copying id, user can copy the full test case
-      //   const testCase = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Test Case Actions</DropdownMenuLabel>
-            {/* <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(testCase.id.toString())
-              }
-            >
-              Copy Id
-            </DropdownMenuItem> */}
-            <DropdownMenuItem>Delete</DropdownMenuItem>
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
+import {
+  ColumnFiltersState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+  VisibilityState,
+} from "@tanstack/react-table";
+import { ChevronDown } from "lucide-react";
+import { useState } from "react";
+import { columns } from "./columns";
 
 export function DataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -115,7 +39,7 @@ export function DataTable() {
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
-    data,
+    data: testcases,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

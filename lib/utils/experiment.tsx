@@ -1,6 +1,6 @@
 export class Experiment {
   id: number = 0;
-  name: string = `Experiment ${this.id}`;
+  name?: string;
   models: number[] = [];
   prompts: number[] = [];
   testCases: number[] = [];
@@ -8,6 +8,7 @@ export class Experiment {
 
   constructor(init?: Partial<Experiment>) {
     Object.assign(this, init);
+    this.name = this.name || `Experiment ${this.id}`;
   }
 
   // this will be used to verify styling for data
