@@ -32,7 +32,7 @@ export const useExperimentStore = create<ExperimentStore>((set) => ({
   updateExperiment: (id, updatedFields) =>
     set((state) => ({
       experiments: [...state.experiments, new Experiment(updatedFields)],
-    })),
+    })), //FUTURE FIX
 }));
 
 // FUTURE: Utilize the selectors: currently it is not producing the expected information

@@ -28,10 +28,18 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { columns } from "./columns";
+import { TestCaseDialog } from "@/components/test-case-dialog";
 
+/*
+  FUTURE
+  --> Dialog for edit test case
+  --> adding/editing functionality affecting the table
+  --> delete test case
+  --> feature to copy test case to other experiments/evaluations
+*/
 export function DataTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -72,7 +80,7 @@ export function DataTable() {
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
+            <Button variant="outline" className="ml-2">
               Columns <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
@@ -96,6 +104,13 @@ export function DataTable() {
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <TestCaseDialog id={undefined} />
+
+        <Button className="ml-auto">
+          <PlusIcon />
+          Add Test Case
+        </Button>
       </div>
       <div className="rounded-md border">
         <Table>

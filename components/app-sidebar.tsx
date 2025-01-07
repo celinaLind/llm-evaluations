@@ -12,6 +12,7 @@ import { TypographyH3, TypographyMuted } from "./Typography";
 import { Button } from "./ui/button";
 import { PlusCircle, PlusSquare } from "lucide-react";
 
+// fix linking to url to link based on experiment/eval id
 export function AppSidebar() {
   const experiments = useExperimentStore((state) => state.experiments);
   return (
