@@ -28,3 +28,7 @@ export function TypographyH4({ value }: { value: string }) {
     </h4>
   );
 }
+
+export function TypographyMuted({ value }: { value: string }) {
+  return <p className="text-sm text-muted-foreground">{value}</p>;
+}
