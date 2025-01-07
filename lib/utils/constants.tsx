@@ -10,7 +10,7 @@ const testcases = [
   new TestCase({ testName: "Test 5" }),
 ];
 
-const experiments = [
+var experiments = [
   new Experiment({ id: 1 }),
   new Experiment({ id: 2 }),
   new Experiment({ id: 3 }),
@@ -20,6 +20,10 @@ const experiments = [
 
 const prompts = [new Prompt({ id: 1 })];
 
-const models = ["model1", "model2", "model3"];
+const modelsList = [
+  { value: "model1", label: "Model 1" },
+  { value: "model2", label: "Model 2" },
+  { value: "model3", label: "Model 3" },
+];
 
-export { models, prompts, testcases, experiments };
+export { modelsList, prompts, testcases, experiments };
