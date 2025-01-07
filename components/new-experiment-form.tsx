@@ -1,51 +1,34 @@
 "use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { Button } from "./ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "./ui/form";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Link } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 
+import { useExperimentStore, useSelectors } from "@/app/store/experiment-store";
 import { toast } from "@/hooks/use-toast";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
+import { modelsList } from "@/lib/utils/constants";
+import { MultiSelect } from "./multi-select";
 import { Input } from "./ui/input";
-import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string({
     required_error: "Please add an experiment name.",
   }),
-  model: z
-    .string({
-      required_error: "Please select a model to use.",
+  models: z.array(
+    z.string({
+      required_error: "Please select a model(s) to use.",
     })
-    .min(4, {
-      message: "Model name must be at least 2 characters.",
-    }),
+  ),
   prompt: z
     .string({
       required_error: "Please enter a prompt for your evaluation.",
@@ -59,24 +42,37 @@ const formSchema = z.object({
 });
 
 export function NewExperiment() {
+  // const [selectedModels, setSelectedModels] = useState<string[]>([]);
+  const router = useRouter();
+  const createExperiment = useExperimentStore(
+    (state) => state.createExperiment
+  );
+  const experiments = useExperimentStore((state) => state.experiments);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      model: "default-model",
+      models: ["default-model"],
       prompt: "Best respond to the question being asked.",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      ),
-    });
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // toast({
+    //   title: "You submitted the following values:",
+    //   description: (
+    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+    //       <code className="text-white">{JSON.stringify(values, null, 2)}</code>
+    //     </pre>
+    //   ),
+    // });
+    // add new experiment
+    const newId = await createExperiment(values);
     console.log(values);
+    console.log("Experiments:", experiments);
+    // go to experiment page
+    // router.push(`/experiments`);
+    router.push(`/experiments/${newId}`);
   }
   return (
     <Form {...form}>
@@ -99,25 +95,20 @@ export function NewExperiment() {
           />
           <FormField
             control={form.control}
-            name="model"
+            name="models"
             render={({ field }) => (
               <FormItem className="w-1/2">
                 <FormLabel>Choose Model</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a model" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="model1">model1</SelectItem>
-                    <SelectItem value="model2">model2</SelectItem>
-                    <SelectItem value="model3">model3</SelectItem>
-                  </SelectContent>
-                </Select>
+                <MultiSelect
+                  options={modelsList}
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                  }}
+                  defaultValue={[]}
+                  placeholder="Select model(s)"
+                  variant="inverted"
+                  maxCount={3}
+                />
                 <FormMessage />
               </FormItem>
             )}
@@ -130,7 +121,12 @@ export function NewExperiment() {
             <FormItem>
               <FormLabel>Enter Prompt</FormLabel>
               <FormControl>
-                <Textarea placeholder="Type your message here." id="message" />
+                <Textarea
+                  onChange={field.onChange}
+                  placeholder="Type your message here..."
+                  id="message"
+                  className="h-64" // Increase the height to 64 (16rem)
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

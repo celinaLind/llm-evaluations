@@ -1,12 +1,15 @@
 export class Experiment {
   id: number = 0;
-  name?: string;
-  models: number[] = [];
-  prompts: number[] = [];
+  name: string;
+  models: string[] = [];
+  prompt: string = "This is a prompt";
   testCases: number[] = [];
   results: number[] = [];
 
+  private static nextId = 1;
+
   constructor(init?: Partial<Experiment>) {
+    this.id = Experiment.nextId++;
     Object.assign(this, init);
     this.name = this.name || `Experiment ${this.id}`;
   }

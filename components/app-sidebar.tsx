@@ -1,35 +1,53 @@
-import { experiments } from "@/lib/utils/constants";
+"use client";
+import { useExperimentStore } from "@/app/store/experiment-store";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSkeleton,
 } from "./ui/sidebar";
+import { TypographyH3, TypographyMuted } from "./Typography";
+import { Button } from "./ui/button";
+import { PlusCircle, PlusSquare } from "lucide-react";
 
 export function AppSidebar() {
+  const experiments = useExperimentStore((state) => state.experiments);
   return (
     <Sidebar>
-      <SidebarHeader>Experiments</SidebarHeader>
-      <SidebarContent>
+      <SidebarHeader>
+        {/* <div className="relative flex items-center justify-between"> */}
+        <div className="text-center">
+          <TypographyH3 value="Experiments" />
+          {/* {experiments.length > 0 && (
+            <Button className="absolute right-0" size="icon">
+              <PlusCircle className="size-sm" />
+            </Button>
+          )} */}
+        </div>
+        <hr />
+      </SidebarHeader>
+      <SidebarContent className="mt-4">
         <SidebarMenu>
           {experiments.length > 0 &&
             experiments.map((item) => (
               <SidebarMenuItem key={item.name}>
                 <SidebarMenuButton asChild>
                   <a href={`/experiments/${item.id}`}>
-                    <span>{item.name}</span>
+                    <span className="text-lg font-semibold text-muted-foreground">
+                      {item.name}
+                    </span>
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
-          {experiments.length === 0 && <div>No current Experiments</div>}
+          <SidebarMenuItem className="text-center mt-2">
+            <Button size="lg">
+              Create New Experiment
+              <PlusSquare />
+            </Button>
+          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarContent>
     </Sidebar>
